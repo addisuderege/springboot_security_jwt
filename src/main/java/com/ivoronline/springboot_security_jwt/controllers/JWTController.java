@@ -11,7 +11,7 @@ public class JWTController {
   @ResponseBody
   @RequestMapping("/CreateJWT")
   public String createJWT() {
-    String jwt = JWTUtil.createJWT("1", "ivoronline", "TestJWT");
+    String jwt = JWTUtil.createJWT("mysuser", "ROLE_USER");
     return jwt;
   }
 
