@@ -9,6 +9,9 @@ import java.security.Key;
 
 public class JWTUtil {
 
+  //========================================================================
+  // CREATE JWT
+  //========================================================================
   public static String createJWT(String id, String issuer, String subject) {
 
     //----------------------------------------------------------------------
