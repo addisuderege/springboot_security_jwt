@@ -11,6 +11,9 @@ import java.util.Map;
 
 public class JWTUtil {
 
+  //USED TO CREATE & DECODE JWT
+  public final static String SECRET_KEY = "mysecretkey";
+
   //========================================================================
   // CREATE JWT
   //========================================================================
@@ -31,8 +34,7 @@ public class JWTUtil {
       .setIssuer ("ivoronline");
 
     //SIGNATURE (SPECIFY SECRET KEY)
-    String secretKey         = "mysecretkey";
-    byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
+    byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
     Key    signingKey        = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
     //GENERATE JWT
