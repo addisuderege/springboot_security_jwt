@@ -20,8 +20,13 @@ public class JWTController {
   @ResponseBody
   @RequestMapping("/DecodeJWT")
   public Claims decodeJWT(@RequestParam String jwt) {
+
+    //GET CLAIMS
     Claims claims = JWTUtil.decodeJWT(jwt);
+
+    //RETURN CLAIMS
     return claims;
+
   }
 
 }
