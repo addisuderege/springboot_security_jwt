@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -11,6 +12,7 @@ import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class JWTUtil {
 
   //USED TO CREATE & DECODE JWT
@@ -19,7 +21,7 @@ public class JWTUtil {
   //========================================================================
   // CREATE JWT
   //========================================================================
-  public static String createJWT(String username, String role) {
+  public String createJWT(String username, String role) {
 
     //HEADER (SPECIFY ALGORITHM)
     SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -45,11 +47,10 @@ public class JWTUtil {
 
   }
 
-
   //========================================================================
   // EXTRACT JWT FROM AUTHORIZATION HEADER
   //========================================================================
-  public static String extractJWTFromAuthorizationHeader(String authorization) {
+  public String extractJWTFromAuthorizationHeader(String authorization) {
 
     //GET AUTHORIZATION HEADER
     if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -68,7 +69,7 @@ public class JWTUtil {
   //========================================================================
   // DECODE JWT
   //========================================================================
-  public static Claims decodeJWT(String jwt) {
+  public Claims decodeJWT(String jwt) {
 
     //GET CLAIMS
     Claims claims = Jwts.parser()
