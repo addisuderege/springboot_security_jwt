@@ -29,20 +29,38 @@ public class JWTController {
   }
 
   //=============================================================
-  // DECODE JWT
+  // GET CLAIMS
   //=============================================================
   @ResponseBody
-  @RequestMapping("/DecodeJWT")
-  public Claims decodeJWT(@RequestHeader("Authorization") String authorization) {
+  @RequestMapping("/GetClaims")
+  public Claims getClaims(@RequestHeader("Authorization") String authorization) {
 
     //EXTRACT JWT FROM AUTHORIZATION HEADER
     String jwt = jwtUtil.extractJWTFromAuthorizationHeader(authorization);
 
     //GET CLAIMS
-    Claims claims = jwtUtil.decodeJWT(jwt);
+    Claims claims = jwtUtil.getClaims(jwt);
 
     //RETURN CLAIMS
     return claims;
+
+  }
+
+  //=============================================================
+  // GET USERNAME
+  //=============================================================
+  @ResponseBody
+  @RequestMapping("/GetUsername")
+  public String getUsername(@RequestHeader("Authorization") String authorization) {
+
+    //EXTRACT JWT FROM AUTHORIZATION HEADER
+    String jwt = jwtUtil.extractJWTFromAuthorizationHeader(authorization);
+
+    //GET USERNAME
+    String username = jwtUtil.getUsername(jwt);
+
+    //RETURN USERNAME
+    return username;
 
   }
 

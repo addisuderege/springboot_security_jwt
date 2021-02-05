@@ -41,8 +41,10 @@ public class JWTUtil {
     byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
     Key    signingKey        = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-    //GENERATE JWT
+    //EXTRACT JWT
     String jwt = builder.signWith(signatureAlgorithm, signingKey).compact();
+
+    //RETURN JWT
     return jwt;
 
   }
@@ -58,7 +60,7 @@ public class JWTUtil {
       return null;
     }
 
-    //GET JWT
+    //EXTRACT JWT
     String jwt = authorization.substring(7);
 
     //RETURN JWT
@@ -67,18 +69,29 @@ public class JWTUtil {
   }
 
   //========================================================================
-  // DECODE JWT
+  // GET CLAIMS
   //========================================================================
-  public Claims decodeJWT(String jwt) {
+  public Claims getClaims(String jwt) {
 
     //GET CLAIMS
     Claims claims = Jwts.parser()
-      .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
-      .parseClaimsJws(jwt).getBody();
+      .setSigningKey(DatatypeConverter
+      .parseBase64Binary(SECRET_KEY))
+      .parseClaimsJws(jwt)
+      .getBody();
 
     //RETURN CLAIMS
     return claims;
 
+  }
+
+  //========================================================================
+  // GET USERNAME
+  //========================================================================
+  public String getUsername(String jwt) {
+    Claims claims   = getClaims(jwt);
+    String username = (String) claims.get("username");
+    return username;
   }
 
 }
