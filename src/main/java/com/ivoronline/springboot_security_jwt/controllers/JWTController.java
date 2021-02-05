@@ -13,6 +13,9 @@ public class JWTController {
 
   @Autowired JWTUtil jwtUtil;
 
+  //=============================================================
+  // CREATE JWT
+  //=============================================================
   @ResponseBody
   @RequestMapping("/CreateJWT")
   public String createJWT() {
@@ -25,6 +28,9 @@ public class JWTController {
 
   }
 
+  //=============================================================
+  // DECODE JWT
+  //=============================================================
   @ResponseBody
   @RequestMapping("/DecodeJWT")
   public Claims decodeJWT(@RequestHeader("Authorization") String authorization) {
