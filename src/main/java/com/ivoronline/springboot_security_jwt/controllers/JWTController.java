@@ -21,14 +21,8 @@ public class JWTController {
   @RequestMapping("/DecodeJWT")
   public Claims decodeJWT(@RequestHeader("Authorization") String authorization) {
 
-    //GET AUTHORIZATION HEADER
-    if (authorization == null || !authorization.startsWith("Bearer ")) {
-      System.out.println("Authorization Header not found");
-      return null;
-    }
-
-    //GET JWT
-    String jwt = authorization.substring(7);
+    //EXTRACT JWT FROM AUTHORIZATION HEADER
+    String jwt = JWTUtil.extractJWTFromAuthorizationHeader(authorization);
 
     //GET CLAIMS
     Claims claims = JWTUtil.decodeJWT(jwt);

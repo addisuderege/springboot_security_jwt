@@ -45,6 +45,26 @@ public class JWTUtil {
 
   }
 
+
+  //========================================================================
+  // EXTRACT JWT FROM AUTHORIZATION HEADER
+  //========================================================================
+  public static String extractJWTFromAuthorizationHeader(String authorization) {
+
+    //GET AUTHORIZATION HEADER
+    if (authorization == null || !authorization.startsWith("Bearer ")) {
+      System.out.println("Authorization Header not found");
+      return null;
+    }
+
+    //GET JWT
+    String jwt = authorization.substring(7);
+
+    //RETURN JWT
+    return jwt;
+
+  }
+
   //========================================================================
   // DECODE JWT
   //========================================================================
