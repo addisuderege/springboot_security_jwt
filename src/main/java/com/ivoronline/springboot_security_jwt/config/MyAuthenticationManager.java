@@ -16,6 +16,7 @@ public class MyAuthenticationManager implements AuthenticationManager {
     public Authentication authenticate(Authentication enteredAuthentication) {
 
       //HARD CODED USER
+      //Here you would call UserDetailsService(enteredUsername) to get UserDetails with Password & Authorities.
       String username = "myuser";
       String password = "mypassword";
       String role     = "ROLE_USER";
