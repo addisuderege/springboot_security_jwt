@@ -21,7 +21,7 @@ public class JWTController {
   public String createJWT() {
 
     //CREATE JWT
-    String jwt = jwtUtil.createJWT("mysuser", "ROLE_USER");
+    String jwt = jwtUtil.createJWT("myuser", "ROLE_USER");
 
     //RETURN JWT
     return jwt;
