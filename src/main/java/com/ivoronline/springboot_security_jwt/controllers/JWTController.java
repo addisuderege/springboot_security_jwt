@@ -1,17 +1,45 @@
 package com.ivoronline.springboot_security_jwt.controllers;
 
 import com.ivoronline.springboot_security_jwt.config.JWTUtil;
+import com.ivoronline.springboot_security_jwt.config.MyAuthenticationManager;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class JWTController {
 
-  @Autowired JWTUtil jwtUtil;
+  @Autowired JWTUtil                 jwtUtil;
+  @Autowired MyAuthenticationManager myAuthenticationManager;
+
+  //==================================================================
+  // AUTHENTICATE
+  //==================================================================
+  @ResponseBody
+  @RequestMapping("/Authenticate")
+  public String authenticate(@RequestParam String enteredUsername, @RequestParam String enteredPassword) {
+
+    //AUTHENTICATE
+    Authentication enteredAuth  = new UsernamePasswordAuthenticationToken(enteredUsername, enteredPassword);
+    Authentication returnedAuth = myAuthenticationManager.authenticate(enteredAuth);
+
+    //CHECK AUTHENTICATION
+    if(returnedAuth == null) { return "User is NOT Authenticated"; }
+
+    //CREATE JWT
+    String jwt = jwtUtil.createJWT("myuser", "ROLE_USER");
+
+    //RETURN JWT
+    return jwt;
+
+  }
 
   //=============================================================
   // CREATE JWT
