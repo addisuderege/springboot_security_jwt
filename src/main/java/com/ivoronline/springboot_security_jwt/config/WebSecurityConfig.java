@@ -1,38 +1,35 @@
 package com.ivoronline.springboot_security_jwt.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+  @Autowired private MyFilter myFilter;
+
   @Override
-  @Bean
-  protected UserDetailsService userDetailsService() {
+  protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-    UserDetails user = User.withDefaultPasswordEncoder()
-      .username("myuser")
-      .password("mypassword")
-      .roles("USER")
-      .build();
+    //ANONYMOUS ACCESS
+    httpSecurity.authorizeRequests().antMatchers("/CreateJWT"  ).permitAll();                //To get JWT
+    httpSecurity.authorizeRequests().antMatchers("/GetClaims"  ).permitAll();                //For Testing
+    httpSecurity.authorizeRequests().antMatchers("/GetUsername").permitAll();                //For Testing
 
-    return new InMemoryUserDetailsManager(user);
+    //OTHER CONFIGURATION
+    httpSecurity.csrf().disable();                                                           //Enables POST
+    httpSecurity.authorizeRequests().anyRequest().authenticated();                           //Authenticated
+    httpSecurity.addFilterBefore(myFilter, UsernamePasswordAuthenticationFilter.class);      //Add Filter
+    httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //No Session
 
-  }
-
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
   }
 
 }
