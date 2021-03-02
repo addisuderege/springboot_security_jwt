@@ -6,7 +6,6 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,7 @@ public class JWTController {
   @RequestMapping("/GetJWT")
   public String getJWT(@RequestParam String enteredUsername, @RequestParam String enteredPassword) {
 
-    //AUTHENTICATE
+    //AUTHENTICATE (COMPARE ENTERED AND STORED CREDENTIALS)
     Authentication enteredAuth  = new UsernamePasswordAuthenticationToken(enteredUsername, enteredPassword);
     Authentication returnedAuth = myAuthenticationManager.authenticate(enteredAuth);
 
@@ -34,7 +33,9 @@ public class JWTController {
     if(returnedAuth == null) { return "User is NOT Authenticated"; }
 
     //CREATE JWT
-    String jwt = jwtUtil.createJWT("myuser", "ROLE_USER");
+    String username = (String) returnedAuth.getPrincipal();
+    String role     = (String) returnedAuth.getAuthorities().toString().replace("[","").replace("]","");
+    String jwt      = jwtUtil.createJWT(username, role);
 
     //RETURN JWT
     return jwt;
