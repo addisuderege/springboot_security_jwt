@@ -23,6 +23,9 @@ public class MyFilter implements Filter {
 
   @Autowired JWTUtil jwtUtil;
 
+  //==================================================================================
+  // DO FILTER
+  //==================================================================================
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterchain)
     throws IOException, ServletException {
@@ -33,30 +36,36 @@ public class MyFilter implements Filter {
     //GET AUTHORIZATION HEADER
     String authorizationHeader = httpRequest.getHeader("Authorization");
 
-    if(authorizationHeader != null) {
-
-      //EXTRACT JWT FROM AUTHORIZATION HEADER
-      String jwt = jwtUtil.extractJWTFromAuthorizationHeader(authorizationHeader);
-
-      //GET CLAIMS
-      Claims claims   = jwtUtil.getClaims(jwt);
-      String username = (String) claims.get("role");
-      String role     = (String) claims.get("username");
-
-      //CREATE AUTHORITIES
-      List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-      authorities.add(new SimpleGrantedAuthority(role));
-
-      //AUTHENTICATE
-      Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-
-      //STORE AUTHENTICATION INTO CONTEXT (SESSION)
-      SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    }
+    //IF AUTHORIZATION HEADER EXISTS USE JWT TO PUT AUTHENTICATION OBJECT INTO CONTEXT
+    if(authorizationHeader != null) { addAuthenticationObjectIntoContext(authorizationHeader); }
 
     //FORWARD REQUEST
     filterchain.doFilter(request, response);
+
+  }
+
+  //==================================================================================
+  // ADD AUTHENTICATION OBJECT INTO CONTEXT
+  //==================================================================================
+  private void addAuthenticationObjectIntoContext(String authorizationHeader) {
+
+    //EXTRACT JWT FROM AUTHORIZATION HEADER
+    String jwt = jwtUtil.extractJWTFromAuthorizationHeader(authorizationHeader);
+
+    //GET CLAIMS
+    Claims claims   = jwtUtil.getClaims(jwt);
+    String username = (String) claims.get("username");
+    String role     = (String) claims.get("role");    //"USER_ROLE"
+
+    //CREATE AUTHORITIES
+    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+                           authorities.add(new SimpleGrantedAuthority(role));
+
+    //AUTHENTICATE
+    Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+    //STORE AUTHENTICATION INTO CONTEXT (SESSION)
+    SecurityContextHolder.getContext().setAuthentication(authentication);
 
   }
 
