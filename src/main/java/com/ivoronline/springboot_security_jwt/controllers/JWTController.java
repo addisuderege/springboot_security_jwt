@@ -20,11 +20,11 @@ public class JWTController {
   @Autowired MyAuthenticationManager myAuthenticationManager;
 
   //==================================================================
-  // AUTHENTICATE
+  // GET JWT
   //==================================================================
   @ResponseBody
-  @RequestMapping("/Authenticate")
-  public String authenticate(@RequestParam String enteredUsername, @RequestParam String enteredPassword) {
+  @RequestMapping("/GetJWT")
+  public String getJWT(@RequestParam String enteredUsername, @RequestParam String enteredPassword) {
 
     //AUTHENTICATE
     Authentication enteredAuth  = new UsernamePasswordAuthenticationToken(enteredUsername, enteredPassword);

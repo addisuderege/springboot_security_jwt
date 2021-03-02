@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity httpSecurity) throws Exception {
 
     //ANONYMOUS ACCESS
-    httpSecurity.authorizeRequests().antMatchers("/Authenticate").permitAll();               //To get JWT
+    httpSecurity.authorizeRequests().antMatchers("/GetJWT"      ).permitAll();               //To get JWT
     httpSecurity.authorizeRequests().antMatchers("/CreateJWT"   ).permitAll();               //To get JWT
     httpSecurity.authorizeRequests().antMatchers("/GetClaims"   ).permitAll();               //For Testing
     httpSecurity.authorizeRequests().antMatchers("/GetUsername" ).permitAll();               //For Testing
