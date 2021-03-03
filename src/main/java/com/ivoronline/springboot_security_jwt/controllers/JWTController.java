@@ -27,13 +27,13 @@ public class JWTController {
     Authentication enteredAuth  = new UsernamePasswordAuthenticationToken(enteredUsername, enteredPassword);
     Authentication returnedAuth = myAuthenticationManager.authenticate(enteredAuth);
 
-    //CHECK AUTHENTICATION
+    //CHECK RESULT OF AUTHENTICATION
     if(returnedAuth == null) { return "User is NOT Authenticated"; }
 
     //CREATE JWT
-    String username = (String) returnedAuth.getPrincipal();
-    String role     = (String) returnedAuth.getAuthorities().toString().replace("[","").replace("]","");
-    String jwt      = jwtUtil.createJWT(username, role);
+    String username    = (String) returnedAuth.getPrincipal();
+    String authorities = (String) returnedAuth.getAuthorities().toString(); //"[CREATE, READ]"
+    String jwt         = jwtUtil.createJWT(username, authorities);
 
     //RETURN JWT
     return jwt;

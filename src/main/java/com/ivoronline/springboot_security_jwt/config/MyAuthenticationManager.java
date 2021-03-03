@@ -22,20 +22,23 @@ public class MyAuthenticationManager implements AuthenticationManager {
       //GET STORED CREDENTIALS
       //Here they are hard coded (for simplicity reason)
       //Call UserDetailsService(enteredUsername) to get UserDetails with Password & Authorities from DB
-      String storedUsername = "myuser";
-      String storedPassword = "mypassword";
-      String storedRole     = "ROLE_USER";
+      String storedUsername    = "admin";
+      String storedPassword    = "adminpassword";
+      String storedAuthorities = "book.read, book.delete";
 
       //AUTHENTICATE USER (COMPARE ENTERED AND STORED CREDENTIALS)
       if (!enteredUsername.equals(storedUsername)) { System.out.println("Username not found"); return null; }
       if (!enteredPassword.equals(storedPassword)) { System.out.println("Incorrect Password"); return null; }
 
       //CREATE AUTHORITIES
+      String[] authoritiesArray = storedAuthorities.split(", ");
       List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-                             authorities.add(new SimpleGrantedAuthority(storedRole));
+      for(String authority : authoritiesArray) {
+        authorities.add(new SimpleGrantedAuthority(authority));
+      }
 
       //CREATE VALIDATED AUTHENTICATION
-      Authentication validatedAuth = new UsernamePasswordAuthenticationToken(storedUsername,storedPassword,authorities);
+      Authentication validatedAuth = new UsernamePasswordAuthenticationToken(enteredUsername, null, authorities);
 
       //RETURN VALIDATES AUTHENTICATION
       return validatedAuth;

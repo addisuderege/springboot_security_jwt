@@ -53,13 +53,17 @@ public class MyFilter implements Filter {
     String jwt = jwtUtil.extractJWTFromAuthorizationHeader(authorizationHeader);
 
     //GET CLAIMS
-    Claims claims   = jwtUtil.getClaims(jwt);
-    String username = (String) claims.get("username");
-    String role     = (String) claims.get("role");    //"USER_ROLE"
+    Claims claims        = jwtUtil.getClaims(jwt);
+    String username       = (String) claims.get("username");
+    String authoritiesJWT = (String) claims.get("authorities");                                  //"[book.read, book.delete]"
 
     //CREATE AUTHORITIES
+    String   authoritiesString = authoritiesJWT.replace("[","").replace("]","").replace(" ",""); //"book.read,book.delete"
+    String[] authoritiesArray  = authoritiesString.split(",");
     List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-                           authorities.add(new SimpleGrantedAuthority(role));
+    for(String authority : authoritiesArray) {
+      authorities.add(new SimpleGrantedAuthority(authority));
+    }
 
     //AUTHENTICATE
     Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
