@@ -24,7 +24,7 @@ public class MyAuthenticationManager implements AuthenticationManager {
       //Call UserDetailsService(enteredUsername) to get UserDetails with Password & Authorities from DB
       String storedUsername    = "admin";
       String storedPassword    = "adminpassword";
-      String storedAuthorities = "book.read, book.delete";
+      String storedAuthorities = "book.create, book.delete";
 
       //AUTHENTICATE USER (COMPARE ENTERED AND STORED CREDENTIALS)
       if (!enteredUsername.equals(storedUsername)) { System.out.println("Username not found"); return null; }

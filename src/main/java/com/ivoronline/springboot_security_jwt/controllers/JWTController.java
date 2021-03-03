@@ -34,7 +34,7 @@ public class JWTController {
 
     //CREATE JWT
     String username = (String) returnedAuth.getPrincipal();
-    String role     = (String) returnedAuth.getAuthorities().toString().replace("[","").replace("]","");
+    String role     = (String) returnedAuth.getAuthorities().toString(); //"[CREATE, READ]"
     String jwt      = jwtUtil.createJWT(username, role);
 
     //RETURN JWT
