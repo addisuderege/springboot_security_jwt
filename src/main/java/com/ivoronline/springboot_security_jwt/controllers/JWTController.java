@@ -19,7 +19,7 @@ public class JWTController {
   public String createJWT() {
 
     //CREATE JWT
-    String jwt = jwtUtil.createJWT("mysuser", "[book.read, book.delete]");
+    String jwt = jwtUtil.createJWT("admin", "[book.read, book.delete]");
 
     //RETURN JWT
     return jwt;
