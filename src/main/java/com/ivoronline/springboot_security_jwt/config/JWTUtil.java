@@ -20,15 +20,15 @@ public class JWTUtil {
   //========================================================================
   // CREATE JWT
   //========================================================================
-  public String createJWT(String username, String role) {
+  public String createJWT(String username, String authorities) {
 
     //HEADER (SPECIFY ALGORITHM)
     SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     //PAYLOAD (SPECIFY CLAIMS)
     Map<String, Object> customClaims = new HashMap<>();
-                        customClaims.put("username", username);
-                        customClaims.put("role"    , role);
+                        customClaims.put("username"   , username);
+                        customClaims.put("authorities", authorities);
 
     JwtBuilder builder = Jwts.builder()
       .setClaims (customClaims)  //Place them first not to override subsequent Claims
